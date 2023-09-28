@@ -37,9 +37,10 @@ namespace accionesBaseDeDatosCchar.Util
         {
             Console.WriteLine("------------------------------------------");
             Console.WriteLine("Bienvenido:");
-            Console.WriteLine("1-Registrar Empleado");
-            Console.WriteLine("2-Modificar Empleado");
-            Console.WriteLine("3-Exportar Empleados");
+            Console.WriteLine("1-Insertar Libro");
+            Console.WriteLine("2-Leeer Datos");
+            Console.WriteLine("3-Actualizar datos");
+            Console.WriteLine("4-Borrar datos");
             Console.WriteLine("0-Salir");
             Console.WriteLine("------------------------------------------");
         }

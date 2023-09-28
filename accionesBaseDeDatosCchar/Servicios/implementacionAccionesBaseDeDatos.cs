@@ -2,6 +2,7 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,18 @@ namespace accionesBaseDeDatosCchar.Servicios
         {
             try
             {
+                
+                string  pruebaConexion = conexion.State.ToString();
+                if(pruebaConexion != "Open")
+                    conexion = null;
                 // creas tu query y le envías la conexión con la que va a trabajar y filtras la condición que necesitas 
-                NpgsqlCommand command = new NpgsqlCommand(query, conexion);                           
+                NpgsqlCommand command = new NpgsqlCommand(query, conexion);  
+                command.ExecuteNonQuery();
+                
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error en la implemnetacion de accion de base de datos: " + ex.Message);
             }
         }
 
@@ -28,6 +35,9 @@ namespace accionesBaseDeDatosCchar.Servicios
             List <Libro> libros= new List<Libro>();
             try
             {
+                string pruebaConexion = conexion.State.ToString();
+                if (pruebaConexion != "Open")
+                    conexion = null;
                 // creas tu query y le envías la conexión con la que va a trabajar y filtras la condición que necesitas 
                 NpgsqlCommand command = new NpgsqlCommand(query, conexion);
                 NpgsqlDataReader dr = command.ExecuteReader();
@@ -38,7 +48,7 @@ namespace accionesBaseDeDatosCchar.Servicios
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error en la implemnetacion de accion de base de datos: " + ex.Message);
             }
             return libros;
         }

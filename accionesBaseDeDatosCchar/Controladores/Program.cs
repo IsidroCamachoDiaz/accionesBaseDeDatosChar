@@ -1,4 +1,5 @@
-﻿using accionesBaseDeDatosCchar.Util;
+﻿using accionesBaseDeDatosCchar.Servicios;
+using accionesBaseDeDatosCchar.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,16 @@ namespace accionesBaseDeDatosCchar
             int opcion = 0;
             do
             {
+                Herramientas.Menu();
+                interfazAccionesPrimarias inter=new implementacionAccionPrimaria();
                 opcion = Herramientas.CapturaEntero("Introduzca una opcion",0,4);
                 switch(opcion) 
                 {
                     case 1:
+                        inter.InsertarDatos();
                         break;
                     case 2:
+                        inter.LeerDatos();
                         break;
                     case 3:
                         break;

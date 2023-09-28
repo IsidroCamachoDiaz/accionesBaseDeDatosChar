@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,25 +20,24 @@ namespace accionesBaseDeDatosCchar.Servicios
         {
             //Conectar a postgresql
             NpgsqlConnection conn = null;
-            string pruebaConexion = null;
-            try
+            string stringConexionPostgresql = ConfigurationManager.ConnectionStrings["stringConexion"].ConnectionString;
+            if (!string.IsNullOrWhiteSpace(stringConexionPostgresql))
             {
-                //Uso el metodo pàsaParametros que recibe la ruta del archivo
-                //y devuelve un array con los datos de acceso
+                try
+                {
+                    conn = new NpgsqlConnection(stringConexionPostgresql);
 
-                string[] parametros = pasaParametros("C:\\Users\\Puesto3\\Desktop\\Ficheros\\claves.txt");
-
-                string datos = String.Format("Server={0};User Id={1}; Password={2};Database={3};", parametros[0], parametros[1], parametros[2], parametros[3]);
-                conn = new NpgsqlConnection(datos);
-
-                conn.Open(); // apertura de conección
-                pruebaConexion = conn.ConnectionString;
+                    conn.Open(); // apertura de conección
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error en la implementacion de conexion a base de datos: " + ex.Message);
+                    conn = null;
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error en la implementacion de conexion a base de datos: " + ex.Message);
-                conn = null;
-            }
+            else
+                Console.WriteLine("El appconfig esta vacio");
+
             return conn;
         }
         private string[] pasaParametros(string ruta)
