@@ -29,5 +29,11 @@ namespace accionesBaseDeDatosCchar.Dtos
         public string Isbn { get => isbn; set => isbn = value; }
         public int Edicion { get => edicion; set => edicion = value; }
 
+        public string propiedades { get { 
+                return this.titulo+" "+this.autor+" "+this.isbn+" "+this.edicion;
+            } 
+        }
+
+
     }
 }

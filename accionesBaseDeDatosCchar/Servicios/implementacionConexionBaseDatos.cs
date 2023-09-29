@@ -40,42 +40,5 @@ namespace accionesBaseDeDatosCchar.Servicios
 
             return conn;
         }
-        private string[] pasaParametros(string ruta)
-        {
-            //en vez de hacerlo con el objeto properties he usado un archivo de texto 
-            string[] parametros = new string[4];
-            string[] vector2;
-            int i = 0;
-            try
-            {
-                StreamReader sr = new StreamReader(ruta);
-
-                while (!sr.EndOfStream)
-                {
-                    vector2 = sr.ReadLine().Split('=');
-                    parametros[i] = vector2[1];
-                    i++;
-                }
-                sr.Close();
-                //Excepciones
-            }
-            catch (ArgumentException au)
-            {
-                Console.WriteLine("No es valido los argumentos que ofrece Error: " + au.Message);
-            }
-            catch (FileNotFoundException fn)
-            {
-                Console.WriteLine("El archivo que intenta leer no existe Error: " + fn.Message);
-            }
-            catch (DirectoryNotFoundException dn)
-            {
-                Console.WriteLine("No encuentra el directorio Error: " + dn.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-            }
-            return parametros;
-        }
     }
 }

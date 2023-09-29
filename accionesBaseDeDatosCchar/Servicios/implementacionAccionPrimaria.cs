@@ -108,7 +108,7 @@ namespace accionesBaseDeDatosCchar.Servicios
         {
             for (int i = 0; i < libros.Count; i++)
             {
-                Console.WriteLine(libros[i].ToString());
+                Console.WriteLine(libros[i].propiedades);
             }
         }
     }
