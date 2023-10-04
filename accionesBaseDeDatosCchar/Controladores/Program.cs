@@ -16,33 +16,39 @@ namespace accionesBaseDeDatosCchar
         static void Main(string[] args)
         {
             //Creo la opcion para que elija el usuario
-            int opcion = 0;
-            do
+            try
             {
-                //Muestro el menu
-                Herramientas.Menu();
-                //Creo la interfaz de acciones
-                interfazAccionesPrimarias inter=new implementacionAccionPrimaria();
-                //Cojo la opcion
-                opcion = Herramientas.CapturaEntero("Introduzca una opcion",0,4);
-                //Coje la opcion segun lo que elijio el usuatio
-                switch(opcion) 
+                int opcion = 0;
+                do
                 {
-                    case 1:
-                        inter.InsertarDatos();
-                        break;
-                    case 2:
-                        inter.LeerDatos();
-                        break;
-                    case 3:
-                        inter.ActualizarDatos();
-                        break;
-                    case 4:
-                        inter.BorrarDatos();
-                        break;
-                }
-                //Cuando la opcion sea 0 acaba el programa
-            } while (opcion != 0);
+                    //Muestro el menu
+                    Herramientas.Menu();
+                    //Creo la interfaz de acciones
+                    interfazAccionesPrimarias inter = new implementacionAccionPrimaria();
+                    //Cojo la opcion
+                    opcion = Herramientas.CapturaEntero("Introduzca una opcion", 0, 4);
+                    //Coje la opcion segun lo que elijio el usuatio
+                    switch (opcion)
+                    {
+                        case 1:
+                            inter.InsertarDatos();
+                            break;
+                        case 2:
+                            inter.LeerDatos();
+                            break;
+                        case 3:
+                            inter.ActualizarDatos();
+                            break;
+                        case 4:
+                            inter.BorrarDatos();
+                            break;
+                    }
+                    //Cuando la opcion sea 0 acaba el programa
+                } while (opcion != 0);
+            }catch (Exception ex)
+            {
+                Console.WriteLine("Error en el controlador "+ex.ToString());
+            }
         }
     }
 }
