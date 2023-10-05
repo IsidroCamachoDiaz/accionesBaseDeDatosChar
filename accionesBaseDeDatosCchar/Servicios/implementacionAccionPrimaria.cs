@@ -30,7 +30,7 @@ namespace accionesBaseDeDatosCchar.Servicios
                 if (conexion != null)
                 {
                     //Creo un lista con todos lo libros para que elija el que quiere actualizar
-                    List<Libro> libros = inter2.LeerDatos(conexion, "SELECT * FROM gbp_almacen.gbp_alm_cat_libros");
+                    List<Libro> libros = inter2.LeerDatos(conexion, "SELECT * FROM gbp_almacen.gbp_alm_cat_libros", 0);
                     //Muestro los libros
                     MostrarDatosBucle(libros);
                     //Uso una variable para saber si encuentra el libro
@@ -53,7 +53,7 @@ namespace accionesBaseDeDatosCchar.Servicios
                                 libros[i].Isbn = Console.ReadLine();
                                 libros[i].Edicion = Herramientas.CapturaEntero("Numero de la edicion", 1, 100);
                                 // Se hace la consulta con la query
-                                inter2.ConsultasBaseDeDatos(conexion, String.Format("UPDATE gbp_almacen.gbp_alm_cat_libros SET titulo='{0}',autor='{1}',isbn='{2}',edicion={3} WHERE id_libro={4}", libros[i].Titulo, libros[i].Autor,libros[i].Isbn, libros[i].Edicion, libros[i].Id_libro));
+                                inter2.ConsultasBaseDeDatos(conexion, "UPDATE gbp_almacen.gbp_alm_cat_libros SET titulo=@titulo,autor=@autor,isbn=@isbn,edicion=@edicion WHERE id_libro=@id", libros[i]);
                                 //Se cambia la variable
                                 encontrado = true;
                                 //Se sale del bucle
@@ -104,7 +104,7 @@ namespace accionesBaseDeDatosCchar.Servicios
                 if (conexion != null)
                 {
                     //Creo la lista para mostrale al usuario
-                    List<Libro> libros = inter2.LeerDatos(conexion, "SELECT * FROM gbp_almacen.gbp_alm_cat_libros");
+                    List<Libro> libros = inter2.LeerDatos(conexion, "SELECT * FROM gbp_almacen.gbp_alm_cat_libros",0);
                     //Muestro los libros
                     MostrarDatosBucle(libros);
                     //Se crea una variable booleana para saber si lo encuentra
@@ -129,7 +129,7 @@ namespace accionesBaseDeDatosCchar.Servicios
                                     seguro = Console.ReadLine();
                                 } while (seguro != "SI QUIERO");
                                 //Metemos la query
-                                inter2.ConsultasBaseDeDatos(conexion, String.Format("DELETE FROM gbp_almacen.gbp_alm_cat_libros WHERE id_libro={0}",libros[i].Id_libro));
+                                inter2.ConsultasBaseDeDatos(conexion,"DELETE FROM gbp_almacen.gbp_alm_cat_libros WHERE id_libro=@id",libros[i]);
                                 //Ponemos la varible a true
                                 encontrado = true;
                                 //Salimos del bucle
@@ -188,10 +188,9 @@ namespace accionesBaseDeDatosCchar.Servicios
                     //Se hace otro bucle para incertar la query con los valores de cada libro
                     for (int e = 0; e < librosCrear.Count; e++)
                     {
-                        string sql = "INSERT INTO gbp_almacen.gbp_alm_cat_libros (titulo,autor,isbn,edicion) "
-                        + "VALUES ('" + librosCrear[e].Titulo + "','" + librosCrear[e].Autor + "', '" + librosCrear[e].Isbn + "', '" + librosCrear[e].Edicion + "');";
+                        string sql = "INSERT INTO gbp_almacen.gbp_alm_cat_libros (titulo,autor,isbn,edicion) VALUES (@titulo,@autor,@isbn,@edicion)";
                         //Hace la consulta con la query
-                        inter2.ConsultasBaseDeDatos(conexion, sql);
+                        inter2.ConsultasBaseDeDatos(conexion, sql, librosCrear[e]);
                     }
                     Console.WriteLine("Se han creado los {0} usuarios",veces);
                     //Desconecta
@@ -233,7 +232,7 @@ namespace accionesBaseDeDatosCchar.Servicios
                     {
                         case 1:
                             //HAce la consulta con la query y me da todos los libros
-                            libros = inter2.LeerDatos(conexion, "SELECT * FROM gbp_almacen.gbp_alm_cat_libros");
+                            libros = inter2.LeerDatos(conexion, "SELECT * FROM gbp_almacen.gbp_alm_cat_libros",0);
                             //Muestra los libros
                             MostrarDatosBucle(libros);
                             break;
@@ -241,7 +240,7 @@ namespace accionesBaseDeDatosCchar.Servicios
                             //Preguntamos el id
                             int id = Herramientas.CapturaEntero("Introduzca el id por el que filtar", 1, 1000);
                             //Cogemos los datos metiendo la query
-                            libros = inter2.LeerDatos(conexion, "SELECT * FROM gbp_almacen.gbp_alm_cat_libros WHERE id_libro=" + id);
+                            libros = inter2.LeerDatos(conexion, "SELECT * FROM gbp_almacen.gbp_alm_cat_libros WHERE id_libro=@id",id);
                             //Si no lo encutra por la id
                             if (libros.Count == 0)
                                 Console.WriteLine("No hay ningun libro con ese id");
