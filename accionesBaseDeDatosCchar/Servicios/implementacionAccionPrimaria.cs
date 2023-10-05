@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using accionesBaseDeDatosCchar.Dtos;
@@ -76,9 +78,18 @@ namespace accionesBaseDeDatosCchar.Servicios
                 else
                     Console.WriteLine("Hubo poblemas con la conexion");
                 //Excepciones
-            }catch(Exception e)
+            }
+            catch (ArgumentOutOfRangeException aor)
             {
-                Console.WriteLine("Hubo un problema en la implementacion de acciones de base de datos: "+e.Message);
+                Console.WriteLine("Error en la implementacion de acciones primarias " + aor.Message);
+            }
+            catch (IOException io)
+            {
+                Console.WriteLine("Error en la implementacion de acciones primarias " + io.Message);
+            }
+            catch (OutOfMemoryException oue)
+            {
+                Console.WriteLine("Error en la implementacion de acciones primarias " + oue.Message);
             }
         }
 
@@ -87,8 +98,6 @@ namespace accionesBaseDeDatosCchar.Servicios
             //Creamos las interfaces con la implementaciones
             interfazConexionBaseDatos inter1 = new implementacionConexionBaseDatos();
             interfazAccionesBaseDeDatos inter2 = new implementacionAccionesBaseDeDatos();
-            try
-            {
                 //Conectamos
                 NpgsqlConnection conexion = inter1.ConectarBaseDedatos();
                 //Comprobamos
@@ -144,12 +153,6 @@ namespace accionesBaseDeDatosCchar.Servicios
                 //Si la ocnexion no esta abierta
                 else
                     Console.WriteLine("Hubo poblemas con la conexion");
-            }
-            //Excepciones
-            catch (Exception e)
-            {
-                Console.WriteLine("Hubo un problema en la implementacion de acciones de base de datos: " + e.Message);
-            }
         }
 
         void interfazAccionesPrimarias.InsertarDatos()
@@ -194,9 +197,17 @@ namespace accionesBaseDeDatosCchar.Servicios
                     //Desconecta
                     inter1.CerrarConexion(conexion);
                     //Excepciones
-                }catch(Exception ex)
+                }catch(ArgumentOutOfRangeException aor)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Error en la implementacion de acciones primarias "+aor.Message);
+                }
+                catch(IOException io)
+                {
+                    Console.WriteLine("Error en la implementacion de acciones primarias "+io.Message);
+                }
+                catch(OutOfMemoryException oue)
+                {
+                    Console.WriteLine("Error en la implementacion de acciones primarias " + oue.Message);
                 }
             }
             //Si no esta abierta la conexion
@@ -211,8 +222,6 @@ namespace accionesBaseDeDatosCchar.Servicios
             interfazAccionesBaseDeDatos inter2 = new implementacionAccionesBaseDeDatos();
             //Creo una lista donde metere los libros que de el resultado
             List<Libro> libros = new List<Libro>();
-            try
-            {
                 //Conecto
                 NpgsqlConnection conexion = inter1.ConectarBaseDedatos();
                 //Compruebo
@@ -245,11 +254,9 @@ namespace accionesBaseDeDatosCchar.Servicios
                     //Desconecta
                     inter1.CerrarConexion(conexion);
                 }
-                //Excepciones
-            }catch(Exception e)
-            {
-                Console.WriteLine("Error en la implementacion de acciones principales: "+e.ToString());
-            }
+                else
+                    Console.WriteLine("Hubo poblemas con la conexion");
+
         }
         //Este metodo sirve para mostrar toda la lista de libros con un bucle
         private void MostrarDatosBucle(List<Libro> libros)

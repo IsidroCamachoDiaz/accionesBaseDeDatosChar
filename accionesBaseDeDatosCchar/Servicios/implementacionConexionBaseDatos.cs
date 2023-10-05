@@ -22,31 +22,31 @@ namespace accionesBaseDeDatosCchar.Servicios
             //Conectar a postgresql
             //Ponemos a nulo de por si
             NpgsqlConnection conn = null;
-            //Cogemos los valores de app.config
-            string stringConexionPostgresql = ConfigurationManager.ConnectionStrings["stringConexion"].ConnectionString;
-            //Comprueba si el string es nulo o tiene espacios que no deberia
-            if (!string.IsNullOrWhiteSpace(stringConexionPostgresql))
+            try
             {
-                try
+                //Cogemos los valores de app.config
+                string stringConexionPostgresql = ConfigurationManager.ConnectionStrings["stringConexion"].ConnectionString;
+                //Comprueba si el string es nulo o tiene espacios que no deberia
+                if (!string.IsNullOrWhiteSpace(stringConexionPostgresql))
                 {
+
                     //Al objeto conexion se le pasa el string que es donde estaran todos los datos
                     //para conectarse a nuestra base de datos
                     conn = new NpgsqlConnection(stringConexionPostgresql);
-
-                    conn.Open(); // apertura de conección
+                    // Apertura de conección
+                    conn.Open(); 
                 }
+                // Si hay algun problema con el valor del string de app.config
+                else
+                    Console.WriteLine("El appconfig esta vacio");
                 //Excepciones
-                catch (Exception ex)
-                {
-                    //Si hay erroes se pone a null
-                    Console.WriteLine("Error en la implementacion de conexion a base de datos: " + ex.Message);
-                    conn = null;
-                }
-            }
-            // Si hay algun problema con el valor del string de app.config
-            else
-                Console.WriteLine("El appconfig esta vacio");
-
+            } catch (ConfigurationErrorsException ce) {
+                Console.WriteLine("Error en la implementacion de conexion a base de datos: No puso bien los datos de app.config" + ce.Message);
+                conn = null;
+            } catch (NullReferenceException nr) {
+                Console.WriteLine("Error en la implementacion de conexion a base de datos: El objeto de los datos esta nulo" + nr.Message);
+                conn = null;
+            } 
             return conn;
         }
     }
